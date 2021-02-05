@@ -115,6 +115,8 @@ class ElasticsearchProxy(BaseProxy):
 
         response = client.execute()
 
+        LOGGING.info(f'response: {response}')
+
         for hit in response:
             try:
                 es_metadata = hit.__dict__.get('meta', {})
@@ -158,6 +160,8 @@ class ElasticsearchProxy(BaseProxy):
             except Exception:
                 LOGGING.exception('The record doesnt contain specified field.')
 
+        LOGGING.info(f'results: {results}')
+
         return search_result_model(total_results=response.hits.total,
                                    results=results)
 
@@ -188,6 +192,7 @@ class ElasticsearchProxy(BaseProxy):
 
         if query_name:
             q = query.Q(query_name)
+            LOGGING.info(f'q: {q}')
             client = client.query(q)
 
         return self._get_search_result(page_index=page_index,
@@ -430,6 +435,8 @@ class ElasticsearchProxy(BaseProxy):
                 }
             }
         }
+
+        LOGGING.info(f'query_name: {query_name}')
 
         model = self.get_model_by_index(current_index)
         return self._search_helper(page_index=page_index,
