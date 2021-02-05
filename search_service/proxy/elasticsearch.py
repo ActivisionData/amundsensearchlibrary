@@ -192,7 +192,9 @@ class ElasticsearchProxy(BaseProxy):
 
         if query_name:
             q = query.Q(query_name)
+
             LOGGING.info(f'q: {q}')
+            
             client = client.query(q)
 
         return self._get_search_result(page_index=page_index,
